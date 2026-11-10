@@ -3,415 +3,512 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bus eller Skived...</title>
+<title>Quiz om organisationsteori</title>
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
 
-body { font-family: 'Special Elite', 'Courier New', monospace;
-       background: url('https://images.unsplash.com/photo-1770105328579-a4aeaa36ddea?fm=jpg&q=60&w=1920&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D')
-                   center/cover no-repeat fixed;
-       color: #2b241c;
-       display: flex; justify-content: center; align-items: center;
-       min-height: 100svh; margin: 0;
-       transition: background-color 1s ease; }
+* {
+  box-sizing: border-box;
+}
 
-body::before { content: ""; position: fixed; inset: 0;
-               background: rgba(13, 17, 23, .75);
-               z-index: -1;
-               transition: background 1s ease; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #39352f;
+  color: #2b241c;
+  font-family: 'Special Elite', 'Courier New', monospace;
+}
 
-/* Skrämbakgrund — varningssidan + sista frågan: blodgruvan */
-body.scary { background: url('blood-forest-2560-x-1440-v0-6k13z693pyf71.webp')
-                        center/cover no-repeat fixed; }
-body.scary::before { background: rgba(120, 16, 16, .55); }
+.card {
+  width: 100%;
+  max-width: 760px;
+  padding: 3rem 3.5rem;
+  background: #ece5d3;
+  border: 1px solid #b8ad93;
+  border-radius: 3px;
+  box-shadow: 2px 3px 12px rgba(0, 0, 0, .5);
+}
 
-.card { background: #ece5d3;
-         border: 1px solid #b8ad93;
-         border-radius: 3px;
-         box-shadow: 2px 3px 12px rgba(0,0,0,.5);
-         padding: 3rem 3.5rem; width: 92%;
-         max-width: 760px; }
+h1 {
+  margin-top: 0;
+  font-size: 2.6rem;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-align: center;
+}
 
-h1 { margin-top: 0; font-weight: 400; text-align: center; letter-spacing: 1px;
-     font-size: 2.6rem; }
-h2 { font-weight: 400; font-size: 1.9rem; line-height: 1.4; }
+h2 {
+  font-size: 1.9rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
 
-.intro p { line-height: 1.7; font-size: 1.5rem; }
+.intro p {
+  font-size: 1.5rem;
+  line-height: 1.7;
+}
 
-.progress-bar { height: 12px; background: rgba(43, 36, 28, .15);
-                border-radius: 2px; overflow: hidden;
-                margin-top: 1.25rem; margin-bottom: .5rem; }
-.progress-bar-fill { height: 100%; width: 0%; background: #5a6e37;
-                     border-radius: 2px; transition: width 2s ease; }
-.progress { font-size: 1.3rem; opacity: .75; margin-bottom: 1rem; }
+button {
+  display: block;
+  width: 100%;
+  margin: 8px 0;
+  padding: 18px;
+  border: 1px solid #2b241c;
+  border-radius: 2px;
+  background: #d9d0ba;
+  color: #2b241c;
+  font: inherit;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: background .2s ease, box-shadow .2s ease;
+}
 
-button { display: block; width: 100%; margin: 8px 0; padding: 18px;
-          font-size: 1.5rem; font-family: inherit;
-          border: 1px solid #2b241c; border-radius: 2px;
-          background: #d9d0ba; color: #2b241c;
-          cursor: pointer;
-          transition: background 1.2s ease, box-shadow 1.2s ease; }
-button:hover:not(:disabled) { box-shadow: 0 6px 14px rgba(0,0,0,.35);
-                               background: #cfc5ab; }
-button:disabled { opacity: .5; cursor: default; }
-button.correct { background: #5a6e37; color: #ece5d3; border-color: #5a6e37; }
-button.wrong { background: #8c3a32; color: #ece5d3; border-color: #8c3a32; }
+button:hover:not(:disabled) {
+  background: #cfc5ab;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .25);
+}
 
-#options { display: flex; flex-wrap: wrap; gap: 8px; }
-#options button { flex: 1 1 30%; margin: 8px 0 0; white-space: nowrap; }
+button:disabled {
+  cursor: default;
+  opacity: .6;
+}
 
-/* Färgade svarsbokstäver */
-#options button .alt-letter { font-weight: bold; margin-right: .4em; }
-#options button.alt-a .alt-letter { color: #8c3a32; }
-#options button.alt-b .alt-letter { color: #2c5f8a; }
-#options button.alt-c .alt-letter { color: #7a5a12; }
+button.correct {
+  border-color: #5a6e37;
+  background: #5a6e37;
+  color: #ece5d3;
+}
 
-/* FAST höjd (inte min-height) + scroll om texten är lång */
-.feedback { height: 2.6rem; font-size: 1.8rem; font-weight: bold;
-            text-align: center; margin: .75rem 0 .25rem; overflow: hidden; }
+button.wrong {
+  border-color: #8c3a32;
+  background: #8c3a32;
+  color: #ece5d3;
+}
+
+.progress-bar {
+  height: 12px;
+  margin: 1.25rem 0 .5rem;
+  overflow: hidden;
+  border-radius: 2px;
+  background: rgba(43, 36, 28, .15);
+}
+
+.progress-bar-fill {
+  width: 0;
+  height: 100%;
+  border-radius: 2px;
+  background: #5a6e37;
+  transition: width .4s ease;
+}
+
+.progress {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  opacity: .75;
+}
+
+#options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+#options button {
+  flex: 1 1 30%;
+  margin: 8px 0 0;
+  text-align: left;
+}
+
+.alt-letter {
+  margin-right: .4em;
+  font-weight: bold;
+}
+
+.alt-a .alt-letter { color: #8c3a32; }
+.alt-b .alt-letter { color: #2c5f8a; }
+.alt-c .alt-letter { color: #7a5a12; }
+
+.feedback {
+  height: 2.6rem;
+  margin: .75rem 0 .25rem;
+  overflow: hidden;
+  font-size: 1.6rem;
+  font-weight: bold;
+  text-align: center;
+}
+
 .feedback.right { color: #3d5024; }
 .feedback.wrong { color: #8c3a32; }
 
-.explain { font-size: 1.3rem; line-height: 1.6; text-align: center;
-           margin: .5rem 0 .25rem; opacity: .9;
-           height: 8.6rem; overflow-y: auto; }
+.explain {
+  height: 8.6rem;
+  margin: .5rem 0 .25rem;
+  overflow-y: auto;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  text-align: center;
+  opacity: .9;
+}
 
-.hidden { display: none; }
-.ghosted { visibility: hidden; }
+.hidden {
+  display: none !important;
+}
 
-/* Endast toning — ingen skalning, inget som flyttar sig */
-.fade-in { animation: fade .4s ease; }
-@keyframes fade { from { opacity: 0; } }
+.ghosted {
+  visibility: hidden;
+}
 
-.kodord { text-align: center; font-size: 2.1rem; letter-spacing: 4px;
-          border: 1px dashed #8c3a32; padding: .8rem; margin-top: 1rem; }
-
-.scare-text { text-align: center; font-size: 1.6rem; font-weight: bold;
-              color: #8c3a32; margin-top: 1rem; }
-
-#restartBtn { margin-top: 1.25rem; font-weight: bold; }
+.result {
+  line-height: 1.6;
+}
 
 @media (max-width: 480px) {
-  body { padding: 1rem; align-items: flex-start; }
-  .card { padding: 1.75rem 1.25rem; width: 100%; }
+  body {
+    align-items: flex-start;
+  }
+
+  .card {
+    padding: 1.75rem 1.25rem;
+  }
+
   h1 { font-size: 2.1rem; }
   h2 { font-size: 1.55rem; }
   .intro p { font-size: 1.3rem; }
-  button { padding: 16px 10px; font-size: 1.3rem; }
-  #options button { flex: 1 1 100%; white-space: normal; }
-  .feedback { font-size: 1.5rem; height: 2.2rem; }
-  .explain { font-size: 1.15rem; height: 11rem; }
-  .scare-text { font-size: 1.4rem; }
-  .kodord { font-size: 1.5rem; letter-spacing: 2px; }
+
+  button {
+    padding: 16px 10px;
+    font-size: 1.15rem;
+  }
+
+  #options button {
+    flex-basis: 100%;
+  }
+
+  .feedback {
+    height: 2.2rem;
+    font-size: 1.4rem;
+  }
+
+  .explain {
+    height: 11rem;
+    font-size: 1rem;
+  }
 }
 </style>
 </head>
+
 <body>
-<div class="card">
+<main class="card">
 
-  <div id="page0" class="intro">
-    <h1>Vill du ha godis?</h1>
-    <p style="text-align:center">Här räcker det inte med att komma utklädd. Man måste svara rätt på frågor också!</p>
+  <section id="page0" class="intro">
+    <h1>Organisationsteori</h1>
+    <p style="text-align:center">
+      Svara på frågorna och se hur många rätt du får!
+    </p>
     <button id="startBtn">Fortsätt</button>
-  </div>
+  </section>
 
-  <div id="page1" class="intro hidden">
-    <p>Du kommer nu att få fyra frågor. </p>
-    <p>De är lite läskiga. Och lite lokala.</p>
-    <p>När du svarat på alla frågor kommer du få ett kodord baserat på hur många rätta svar du fick.</p>
-    <button id="instrBtn1">Fortsätt</button>
-  </div>
+  <section id="page1" class="intro hidden">
+    <p>Du kommer att få åtta frågor om organisationsteori.</p>
+    <p>Läs frågorna och svarsalternativen noga.</p>
+    <button id="beginBtn">Börja quizet</button>
+  </section>
 
-  <div id="page2" class="intro hidden">
-    <p> När du fått ditt kodord, tyck på ringklockan till höger. </p>
-    <p> När dörren öppnas säger du ditt kodord. Sen får du det godiset du förtjänar.</p>
-    <p> ---------</p>
-    <p> 4 rätt =  Superbra godispåse! </p>
-    <p> 3 rätt =  En helt OK chokladbit. </p>
-    <p> 2 rätt =  En rätt tråkig klubba. </p>
-    <p> 1 rätt =  En gammal morot  </p>
-    <p> 0 rätt = Inget godis...</p>
-    <button id="instrBtn2">Fortsätt >>> </button>
-  </div>
-
-  <div id="pageWarn" class="hidden">
-    <h2 style="text-align:center">⚠️ Just det! ⚠️</h2>
-    <p>Jag har en sak som jag glömde att berätta.</p>
-    <p>Om du svarar fel på nästa fråga kommer <strong>Lykke-katten</strong> och tar dig! </p>
-    <p>Hon lurar kanske bakom husknuten. Eller kanske i växthuset. Eller under trappan...</p>
-    <p>Du kan inte fly. Du måste svara... </p>
-    <button id="warnBtn">Fortsätt</button>
-  </div>
-
-  <div id="page3" class="hidden">
+  <section id="quizPage" class="hidden">
     <div id="question"></div>
     <div id="options"></div>
-    <div class="progress-bar"><div id="barFill" class="progress-bar-fill"></div></div>
+
+    <div class="progress-bar">
+      <div id="barFill" class="progress-bar-fill"></div>
+    </div>
+
     <div id="progress" class="progress"></div>
     <div id="feedback" class="feedback"></div>
     <p id="explain" class="explain"></p>
-    <button id="nextBtn" class="ghosted">Fortsätt</button>
-    <button id="restartBtn" class="hidden">Börja om <small>(tryck fortsätt)</small></button>
-  </div>
 
-</div>
+    <button id="nextBtn" class="ghosted">Fortsätt</button>
+    <button id="restartBtn" class="hidden">Börja om</button>
+  </section>
+
+</main>
 
 <script>
-const questionSets = [
-  [ // UPPSÄTTNING A — era nuvarande frågor
-    { q: "Vilket land har Halloween sitt ursprung i?", options: ["Irland", "USA", "Legoland"], answer: 0,
-      explain: "Halloween kommer från det keltiska Samhain-firandet i Irland. USA gjorde firandet stort, men ursprunget är irländskt." },
-    { q: "Vad är det latinska ordet för 'Mässan för de döda'", options: ["Carpe Diem", "Reqviem", "Tralalero Tralala"], answer: 1,
-      explain: "Requiem är en katolsk dödsmässa. Själva ordet betyer 'vila'." },
-    { q: "Vilket smeknamn hade Gustava Elisabeth Pettersson (1855-1938), den svartklädda kvinnan med den tomma barnvagnen, som nu sägs spöka på olika platser i Skived?", options: ["Babben", "Kokla", "Vagnkärringen"], answer: 1,
-      explain: "Hon var alltid svartklädd och hade ett rep runt midjan. I repet hade hon ett lås och en kniv." },
-    { q: "Vilken är den läskigaste läraren på Skivedskolan?", options: ["Kenta Kofot", "Caligula", "Janina Falk"], answer: 2,
-      explain: "Janina Falk är den läskigaste läraren — Och hon bor i det här huset..." }
-  ],
-  [ // UPPSÄTTNING B — skräck, blod och Skived
-    { q: "Enligt klassisk vampyrfolktro, vad kan döda en vampyr?",
-      options: ["Kärlek", "En träpåle genom hjärtat", "Nocco"],
-      answer: 1,
-      explain: "I många vampyrberättelser sägs en träpåle genom hjärtat kunna döda vampyren." },
-    { q: "Blod kan vara läskigt, men är livsviktigt. Vilken av följande är en blodgrupp?",
-      options: ["IJWBC", "JLC", "AB"],
-      answer: 2,
-      explain: "Det så kallade AB0-systemet har fyra huvudgrupper: A, B, AB och 0." },
-    { q: "Vilken känd skräckförfattare har skrivit böckerna Det, Carrie och Jurtjyrkogården?",
-      options: ["Stephen King", "Stefan Holm", "Selma Lagerlöf"],
-      answer: 0,
-      explain: "Stephen King är en amerikansk författare som sedan 1970-talet har skrivit över sextio skräckromaner, men också drama, som Den gröna milen." },
-    { q: "Vilken är den läskigaste läraren på Skivedskolan?", options: ["Kenta Kofot", "Caligula", "Janina Falk"], answer: 2,
-      explain: "Janina Falk är den läskigaste läraren — Och hon bor i det här huset..." }
-  ]
+const questions = [
+  {
+    q: "Hur gammal är organisationsteorin som egen akademisk disciplin?",
+    options: [
+      "Den etablerades på 1980-talet",
+      "Den växte fram under det tidiga 1900-talet",
+      "Den har funnits sedan antiken"
+    ],
+    answer: 1,
+    explain: "Organisationsteorin har rötter hos bland andra Max Weber kring sekelskiftet 1900. Ämnet utvecklades vidare under 1930-, 1940- och 1950-talen, bland annat genom Herbert Simons Administrative Behavior från 1947."
+  },
+  {
+    q: "Vilken av följande räknas som en av organisationsteorins grundare?",
+    options: [
+      "Frederick Taylor",
+      "Peter Drucker",
+      "Abraham Maslow"
+    ],
+    answer: 0,
+    explain: "Taylors Scientific Management från 1911 var ett tidigt systematiskt försök att studera och organisera arbete."
+  },
+  {
+    q: "Vilken beskrivning ligger närmast en klassisk definition av en organisation?",
+    options: [
+      "En grupp människor som delar samma intressen",
+      "Ett socialt system där verksamheten samordnas medvetet och som har relativt tydliga gränser",
+      "Ett företag som säljer varor eller tjänster för att gå med vinst"
+    ],
+    answer: 1,
+    explain: "Organisationer kännetecknas ofta av samordnad verksamhet och relativt tydliga gränser. De kan också ha en hierarkisk struktur."
+  },
+  {
+    q: "Vilka två betydelser kan ordet ”organisation” ha inom ämnet?",
+    options: [
+      "Enbart företagsstrukturer",
+      "Både ett socialt system och processen att organisera",
+      "Enbart formella myndigheter"
+    ],
+    answer: 1,
+    explain: "Ordet kan syfta både på en organisation som ett socialt system och på den pågående processen att organisera."
+  },
+  {
+    q: "Vilken klassisk teoretiker beskrev byråkratin som en idealtyp?",
+    options: [
+      "Max Weber",
+      "Émile Durkheim",
+      "Michel Foucault"
+    ],
+    answer: 0,
+    explain: "Weber beskrev byråkratin som en organisationsform med bland annat regler, hierarki, skriftlig dokumentation och opersonliga relationer."
+  },
+  {
+    q: "Vilka studier bidrog till utvecklingen av den så kallade mänskliga relationernas skola?",
+    options: [
+      "Hawthorne-studierna",
+      "Stanfordfängelseexperimentet",
+      "Framinghamstudien om hjärtsjukdomar"
+    ],
+    answer: 0,
+    explain: "Hawthorne-studierna genomfördes 1924–1932. De bidrog till att rikta uppmärksamheten mot sociala relationer och andra mänskliga faktorer i arbetslivet."
+  },
+  {
+    q: "Vilket begrepp förknippas med Herbert Simons beskrivning av beslutsfattares begränsade rationalitet?",
+    options: [
+      "Instinktiv rationalitet",
+      "Begränsad rationalitet (bounded rationality)",
+      "Kollektiv intuition"
+    ],
+    answer: 1,
+    explain: "Simon använde begreppet begränsad rationalitet för att beskriva hur beslut påverkas av begränsad information och begränsad förmåga att överblicka alla alternativ."
+  },
+  {
+    q: "Vad kännetecknar kontingensteorin inom organisationsteori?",
+    options: [
+      "Det finns en enda organisationsform som passar i alla situationer",
+      "En lämplig organisationsstruktur beror på faktorer som omgivning, teknik och storlek",
+      "Organisationer strävar alltid mot kaos"
+    ],
+    answer: 1,
+    explain: "Kontingensteorin utgår från att en lämplig organisationsform beror på organisationens förutsättningar och situation."
+  }
 ];
-
-const kodord = ["HEJA DJURGÅRDEN", "GOD JUL", "BRONS", "SILVER", "LYKKE"];
-
-const pages = ["page0", "page1", "page2", "page3"];
 
 let questionIndex = 0;
 let score = 0;
-let currentSet = 0;                 // 0 = uppsättning A, 1 = uppsättning B
-let questions = questionSets[0];    // aktiv uppsättning
-let autoTimer = null;
+
+const page0 = document.getElementById("page0");
+const page1 = document.getElementById("page1");
+const quizPage = document.getElementById("quizPage");
 const nextBtn = document.getElementById("nextBtn");
 const restartBtn = document.getElementById("restartBtn");
-const card = document.querySelector(".card");
 
-function setScary(on) {
-  document.body.classList.toggle("scary", on);
-}
-
-function animate() {
-  card.classList.remove("fade-in");
-  void card.offsetWidth;
-  card.classList.add("fade-in");
-}
-
-function showPage(n) {
-  pages.forEach((id, i) =>
-    document.getElementById(id).classList.toggle("hidden", i !== n));
-  document.getElementById("pageWarn").classList.add("hidden");
-  setScary(false);                 // intro-sidor + första frågan: vanlig bakgrund
-  animate();
-}
-
-function showWarn() {
-  pages.forEach(id => document.getElementById(id).classList.add("hidden"));
-  document.getElementById("pageWarn").classList.remove("hidden");
-  setScary(true);                  // blodsogens bakgrund på varningssidan
-  animate();
-}
-
-document.getElementById("startBtn").onclick  = () => showPage(1);
-document.getElementById("instrBtn1").onclick = () => showPage(2);
-document.getElementById("instrBtn2").onclick = () => { showPage(3); showQuestion(); };
-document.getElementById("warnBtn").onclick = () => {
-  document.getElementById("pageWarn").classList.add("hidden");
-  document.getElementById("page3").classList.remove("hidden");
-  showQuestion();
-};
-
-function showQuestion() {
-  const q = questions[questionIndex];
-  const total = questions.length;
-
-  restartBtn.classList.add("hidden");
-  setScary(questionIndex === total - 1);   // blodsogens bakgrund bara på sista frågan
-
-  document.getElementById("barFill").style.width = (questionIndex / total * 100) + "%";
-  document.getElementById("progress").textContent =
-    `Fråga ${questionIndex + 1} av ${total} — Poäng: ${score}`;
-  document.getElementById("question").innerHTML = `<h2>${q.q}</h2>`;
-  const box = document.getElementById("options");
-  box.innerHTML = "";
-  const fb = document.getElementById("feedback");
-  fb.textContent = "";
-  fb.className = "feedback";
-  const ex = document.getElementById("explain");
-  ex.textContent = "";
-  ex.scrollTop = 0;
-  nextBtn.classList.add("ghosted");      // tar plats men syns inte
-  nextBtn.classList.remove("hidden");
-  nextBtn.textContent = "Fortsätt";
-  nextBtn.dataset.mode = "next";
-
-  const keys = ["A", "B", "C"];
-  const classes = ["alt-a", "alt-b", "alt-c"];
-  q.options.forEach((opt, i) => {
-    const btn = document.createElement("button");
-    btn.classList.add(classes[i]);
-    btn.innerHTML = `<span class="alt-letter">${keys[i]}.</span>${opt}`;
-    btn.onclick = () => answer(i === q.answer, btn);
-    box.appendChild(btn);
-  });
-
-  animate();
-}
-
-function answer(correct, btn) {
-  document.querySelectorAll("#options button").forEach(b => b.disabled = true);
-  const fb = document.getElementById("feedback");
-  const q = questions[questionIndex];
-
-  if (correct) {
-    score++;
-    btn.classList.add("correct");
-    fb.textContent = "✔ RÄTT! Ett godispoäng!";
-    fb.classList.add("right");
-    document.getElementById("explain").textContent = q.explain || "";
-  } else {
-    btn.classList.add("wrong");
-    document.querySelectorAll("#options button")[q.answer].classList.add("correct");
-    fb.textContent = "✘ FEL!";
-    fb.classList.add("wrong");
-    document.getElementById("explain").textContent =
-      "Rätt svar: " + q.options[q.answer] + " — " + (q.explain || "");
-  }
-  document.getElementById("barFill").style.width = ((questionIndex + 1) / questions.length * 100) + "%";
-
-  nextBtn.classList.remove("ghosted");   // syns nu, men flyttar inget
-
-  autoTimer = setTimeout(() => nextBtn.click(), 9000);
-}
-
-nextBtn.onclick = () => {
-  if (nextBtn.classList.contains("ghosted")) return;   // ingen klick innan svar
-  clearTimeout(autoTimer);
-  questionIndex++;
-  if (questionIndex >= questions.length) return endScreen();
-  if (questionIndex === questions.length - 1) return showWarn();  // varning före sista frågan
-  showQuestion();
-};
-
-function endScreen() {
-  setScary(false);                 // slutsidan: vanlig bakgrund igen
-  document.getElementById("barFill").style.width = "100%";
-  document.getElementById("progress").textContent = "";
-  document.getElementById("options").innerHTML = "";
-  const fb = document.getElementById("feedback");
-  fb.textContent = "";
-  fb.className = "feedback";
-  document.getElementById("explain").textContent = "";
-  nextBtn.classList.add("hidden");
-  nextBtn.classList.remove("ghosted");
-
-  const total = questions.length;
-
-  if (score === 0) {
-    document.getElementById("question").innerHTML =
-      `<h2>Slutpoäng: 0 av ${total}</h2>` +
-      `<p class="scare-text">Inga rätt... Allmänbildningens spöke kommer hemsöka dig inatt och slå dig i huvudet med en bok (jättehårt!). Testa att spela igen</p>`;
-    restartBtn.classList.remove("hidden");
-    animate();
-    return;
-  }
-
-  let verdict;
-  if (score === total)  verdict = "Bra jobbat! Tryck på ringklockan, och när de öppnar säg ditt kodord";
-  else if (score === 3) verdict = "Ganska bra. Tryck på ringklockan, och när de öppnar säg ditt kodord";
-  else if (score === 2) verdict = "Ganska dåligt svarat faktiskt. Du kan också testa att spela igen. Annars; tryck på ringklockan, och när de öppnar säg ditt kodord";
-  else                  verdict = "Urdåligt. Tryck på ringklockan. Du kan också testa att spela igen. Annars; tryck på ringklockan, och när de öppnar säg ditt kodord";
-
-  document.getElementById("question").innerHTML =
-    `<h2>Slutpoäng: ${score} av ${total}</h2><p>${verdict}</p>` +
-    `<p style="text-align:center; margin-top:1rem;">Ditt kodord är:</p>` +
-    `<div class="kodord">${kodord[score]}</div>`;
-  restartBtn.classList.remove("hidden");
-  animate();
-}
-
-function resetGame() {
-  clearTimeout(autoTimer);
-  questionIndex = 0;
-  score = 0;
-  currentSet = (currentSet + 1) % questionSets.length;  // A → B → A → B ...
-  questions = questionSets[currentSet];
-  document.getElementById("barFill").style.width = "0%";
-  showPage(0);
-}
-
-restartBtn.onclick = resetGame;
-
-let idleTimer = null;
-
-function bumpIdle() {
-  clearTimeout(idleTimer);
-  idleTimer = setTimeout(resetGame, 72022);
-}
-
-document.addEventListener("click", bumpIdle);
-document.addEventListener("keydown", bumpIdle);
-bumpIdle();
-
-document.addEventListener("keydown", e => {
-  const key = e.key.toLowerCase();
-
-  // Varningssidan: Enter/mellanslag = Fortsätt
-  if (!document.getElementById("pageWarn").classList.contains("hidden")) {
-    if (key === "enter" || key === " " || e.code === "Space") {
-      e.preventDefault();
-      document.getElementById("warnBtn").click();
-    }
-    return;
-  }
-
-  if (key === "enter" || key === " " || e.code === "Space") {
-    e.preventDefault();
-
-    // På frågesidan: mellanslag/Enter = Fortsätt, annars Börja om
-    const onQuestionPage = !document.getElementById("page3").classList.contains("hidden");
-    if (onQuestionPage) {
-      if (!nextBtn.classList.contains("ghosted") &&
-          !nextBtn.classList.contains("hidden") &&
-          questionIndex < questions.length) {
-        nextBtn.click();
-      } else if (!restartBtn.classList.contains("hidden")) {
-        restartBtn.click();          // slutet av spelet: börja om med space
-      }
-      return;
-    }
-
-    // På intro-sidorna: tryck första synliga knapp som vanligt
-    const visible = [...document.querySelectorAll("div[id^='page']")]
-      .find(d => !d.classList.contains("hidden"));
-    if (visible) {
-      const btn = visible.querySelector("button:not(.hidden):not(.ghosted)");
-      if (btn && !btn.disabled && !btn.closest("#options")) btn.click();
-    }
-    return;
-  }
-
-  const map = { "q": 0, "6": 1, "0": 2 };
-  const idx = map[key];
-  if (idx !== undefined) {
-    const opts = [...document.querySelectorAll("#options button")];
-    if (opts[idx] && !opts[idx].disabled) opts[idx].click();
-  }
+document.getElementById("startBtn").addEventListener("click", () => {
+  page0.classList.add("hidden");
+  page1.classList.remove("hidden");
 });
 
-showPage(0);
+document.getElementById("beginBtn").addEventListener("click", startQuiz);
+nextBtn.addEventListener("click", nextQuestion);
+restartBtn.addEventListener("click", resetQuiz);
+
+function startQuiz() {
+  questionIndex = 0;
+  score = 0;
+  page0.classList.add("hidden");
+  page1.classList.add("hidden");
+  quizPage.classList.remove("hidden");
+  showQuestion();
+}
+
+function showQuestion() {
+  const question = questions[questionIndex];
+  const optionsContainer = document.getElementById("options");
+  const feedback = document.getElementById("feedback");
+  const explain = document.getElementById("explain");
+  const letters = ["A", "B", "C"];
+  const optionClasses = ["alt-a", "alt-b", "alt-c"];
+
+  document.getElementById("question").innerHTML = `<h2>${question.q}</h2>`;
+  document.getElementById("progress").textContent =
+    `Fråga ${questionIndex + 1} av ${questions.length} — Poäng: ${score}`;
+  document.getElementById("barFill").style.width =
+    `${(questionIndex / questions.length) * 100}%`;
+
+  optionsContainer.innerHTML = "";
+  feedback.textContent = "";
+  feedback.className = "feedback";
+  explain.textContent = "";
+  explain.scrollTop = 0;
+
+  nextBtn.classList.add("ghosted");
+  nextBtn.classList.remove("hidden");
+  nextBtn.textContent =
+    questionIndex === questions.length - 1 ? "Visa resultat" : "Fortsätt";
+  restartBtn.classList.add("hidden");
+
+  question.options.forEach((option, index) => {
+    const button = document.createElement("button");
+    button.classList.add(optionClasses[index]);
+    button.innerHTML =
+      `<span class="alt-letter">${letters[index]}.</span> ${option}`;
+    button.addEventListener("click", () => answerQuestion(index, button));
+    optionsContainer.appendChild(button);
+  });
+}
+
+function answerQuestion(selectedIndex, selectedButton) {
+  const question = questions[questionIndex];
+  const optionButtons = document.querySelectorAll("#options button");
+  const feedback = document.getElementById("feedback");
+
+  if (optionButtons[0].disabled) return;
+
+  optionButtons.forEach(button => {
+    button.disabled = true;
+  });
+
+  if (selectedIndex === question.answer) {
+    score++;
+    selectedButton.classList.add("correct");
+    feedback.textContent = "✔ Rätt svar!";
+    feedback.classList.add("right");
+    document.getElementById("explain").textContent = question.explain;
+  } else {
+    selectedButton.classList.add("wrong");
+    optionButtons[question.answer].classList.add("correct");
+    feedback.textContent = "✘ Fel svar";
+    feedback.classList.add("wrong");
+    document.getElementById("explain").textContent =
+      `Rätt svar: ${question.options[question.answer]} — ${question.explain}`;
+  }
+
+  document.getElementById("barFill").style.width =
+    `${((questionIndex + 1) / questions.length) * 100}%`;
+  nextBtn.classList.remove("ghosted");
+}
+
+function nextQuestion() {
+  if (nextBtn.classList.contains("ghosted")) return;
+
+  questionIndex++;
+
+  if (questionIndex >= questions.length) {
+    showResults();
+  } else {
+    showQuestion();
+  }
+}
+
+function showResults() {
+  document.getElementById("question").innerHTML =
+    `<h2>Du fick ${score} av ${questions.length} rätt!</h2>`;
+
+  document.getElementById("options").innerHTML = "";
+  document.getElementById("progress").textContent = "";
+  document.getElementById("barFill").style.width = "100%";
+  document.getElementById("feedback").textContent = "";
+
+  const explain = document.getElementById("explain");
+  explain.className = "explain result";
+
+  if (score === questions.length) {
+    explain.textContent = "Utmärkt resultat!";
+  } else if (score >= 6) {
+    explain.textContent = "Riktigt bra jobbat!";
+  } else if (score >= 4) {
+    explain.textContent = "Bra jobbat — du har koll på mycket!";
+  } else {
+    explain.textContent = "Fortsätt öva, så sitter det snart!";
+  }
+
+  nextBtn.classList.add("hidden");
+  restartBtn.classList.remove("hidden");
+}
+
+function resetQuiz() {
+  questionIndex = 0;
+  score = 0;
+
+  quizPage.classList.add("hidden");
+  page1.classList.add("hidden");
+  page0.classList.remove("hidden");
+
+  nextBtn.classList.remove("hidden");
+  nextBtn.classList.add("ghosted");
+  restartBtn.classList.add("hidden");
+  document.getElementById("explain").className = "explain";
+}
+
+// Tangentbord: Enter eller mellanslag aktiverar knappar.
+// A, B och C väljer motsvarande svarsalternativ.
+document.addEventListener("keydown", event => {
+  const key = event.key.toLowerCase();
+
+  if (key === "enter" || key === " ") {
+    const activePage = [page0, page1, quizPage]
+      .find(page => !page.classList.contains("hidden"));
+
+    if (!activePage) return;
+
+    if (!quizPage.classList.contains("hidden")) {
+      if (!nextBtn.classList.contains("hidden") &&
+          !nextBtn.classList.contains("ghosted")) {
+        event.preventDefault();
+        nextBtn.click();
+      } else if (!restartBtn.classList.contains("hidden")) {
+        event.preventDefault();
+        restartBtn.click();
+      }
+    } else {
+      const button = activePage.querySelector("button");
+      if (button) {
+        event.preventDefault();
+        button.click();
+      }
+    }
+
+    return;
+  }
+
+  if (!quizPage.classList.contains("hidden")) {
+    const answerIndex = { a: 0, b: 1, c: 2 }[key];
+
+    if (answerIndex !== undefined) {
+      const buttons = document.querySelectorAll("#options button");
+      if (buttons[answerIndex] && !buttons[answerIndex].disabled) {
+        buttons[answerIndex].click();
+      }
+    }
+  }
+});
 </script>
 </body>
 </html>
